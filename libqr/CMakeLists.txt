@@ -19,9 +19,19 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH OFF)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${libdir}")
 set(CMAKE_INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/${libdir}")
 
-find_package(ZLIB)
+##############################################################################
+#find_package(ZLIB)
+#set my own zlib path
+set (ZLIB_INCLUDE_DIRS "")  #set in visual studio
+set (ZLIB_LIBRARIES "")     #set in visual studio
 
-add_definitions(-Wall -Wextra)
+#add_definitions(-Wall -Wextra)
+# Set default compile flags for GCC
+if(CMAKE_COMPILER_IS_GNUCXX)
+ message(STATUS "GCC detected, adding compile flags")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++98 -pedantic -Wall -Wextra")
+endif(CMAKE_COMPILER_IS_GNUCXX)
+##############################################################################
 
 include_directories(${ZLIB_INCLUDE_DIRS})
 

@@ -377,7 +377,7 @@ qrSymbolToPBM(QRCode *qr, int sep, int mag, int *size)
 	/*
 	 * 変換後のサイズを計算し、メモリを確保する
 	 */
-	hsize = snprintf(&(header[0]), sizeof(header), "P1\n%d %d\n", imgdim, imgdim);
+	hsize = _snprintf(&(header[0]), sizeof(header), "P1\n%d %d\n", imgdim, imgdim);
 	if (hsize == -1 || header[hsize - 1] != '\n') {
 		QRCNV_RETURN_FAILURE(QR_ERR_UNKNOWN, _QR_FUNCTION);
 	}
@@ -628,7 +628,7 @@ qrsSymbolsToPBM(QRStructured *st, int sep, int mag, int order, int *size)
 	/*
 	 * 変換後のサイズを計算し、メモリを確保する
 	 */
-	hsize = snprintf(&(header[0]), 64, "P1\n%d %d\n", xdim, ydim);
+	hsize = _snprintf(&(header[0]), 64, "P1\n%d %d\n", xdim, ydim);
 	if (hsize >= 64) {
 		QRCNV_RETURN_FAILURE(QR_ERR_UNKNOWN, _QR_FUNCTION);
 	}

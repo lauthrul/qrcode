@@ -98,7 +98,7 @@ main(int argc, char **argv)
 			} else {
 				char outputs[PATH_MAX] = { '\0' };
 				int written = 0;
-				written = snprintf(&(outputs[0]), PATH_MAX, "%s%02d.%s",
+				written = _snprintf(&(outputs[0]), PATH_MAX, "%s%02d.%s",
 						&(output[0]), i + 1, qrExtension(fmt));
 				if (written < 0 || written >= PATH_MAX) {
 					ewritelnf("%s: output pathname is too long", argv[0]);
@@ -556,7 +556,7 @@ qrGetParameter(int argc, char **argv,
 			}
 			if (!qrCmdAddData2(qr, source, srclen, mode)) {
 				char errinfo[QR_ERR_MAX];
-				snprintf(&(errinfo[0]), QR_ERR_MAX, "%s: %s", ptr, qrCmdGetErrorInfo(qr));
+				_snprintf(&(errinfo[0]), QR_ERR_MAX, "%s: %s", ptr, qrCmdGetErrorInfo(qr));
 				qrCmdDestroy(qr);
 				errx(1, "%s", errinfo);
 			}
@@ -579,7 +579,7 @@ qrGetParameter(int argc, char **argv,
 			memcpy(&(source[0]), ptr, (size_t)srclen);
 			if (!qrCmdAddData2(qr, source, srclen, mode)) {
 				char errinfo[QR_ERR_MAX];
-				snprintf(&(errinfo[0]), QR_ERR_MAX, "argv[%d]: %s", i, qrCmdGetErrorInfo(qr));
+				_snprintf(&(errinfo[0]), QR_ERR_MAX, "argv[%d]: %s", i, qrCmdGetErrorInfo(qr));
 				qrCmdDestroy(qr);
 				errx(1, "%s", errinfo);
 			}
@@ -614,7 +614,7 @@ qrGetParameter(int argc, char **argv,
 		}
 		if (!qrCmdAddData2(qr, source, srclen, mode)) {
 			char errinfo[QR_ERR_MAX];
-			snprintf(&(errinfo[0]), QR_ERR_MAX, "%s", qrCmdGetErrorInfo(qr));
+			_snprintf(&(errinfo[0]), QR_ERR_MAX, "%s", qrCmdGetErrorInfo(qr));
 			qrCmdDestroy(qr);
 			errx(1, "%s", errinfo);
 		}

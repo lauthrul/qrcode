@@ -571,9 +571,9 @@ qrSetErrorInfo(QRCode *qr, int errnum, const char *param)
 {
 	qr->errcode = errnum;
 	if (param != NULL) {
-		snprintf(&(qr->errinfo[0]), QR_ERR_MAX, "%s: %s", param, qrStrError(errnum));
+		_snprintf(&(qr->errinfo[0]), QR_ERR_MAX, "%s: %s", param, qrStrError(errnum));
 	} else {
-		snprintf(&(qr->errinfo[0]), QR_ERR_MAX, "%s", qrStrError(errnum));
+		_snprintf(&(qr->errinfo[0]), QR_ERR_MAX, "%s", qrStrError(errnum));
 	}
 }
 
@@ -588,14 +588,14 @@ qrSetErrorInfo2(QRCode *qr, int errnum, const char *param)
 	info = &(qr->errinfo[0]);
 	qr->errcode = QR_ERR_SEE_ERRNO;
 	if (param != NULL) {
-		size = snprintf(info, QR_ERR_MAX, "%s: ", param);
+		size = _snprintf(info, QR_ERR_MAX, "%s: ", param);
 		if (size < 0 || size >= QR_ERR_MAX) {
 			return;
 		}
 		info += size;
 	}
 #ifdef WIN32
-	snprintf(info, (size_t)(QR_ERR_MAX - size), "%s", strerror(errnum));
+	_snprintf(info, (size_t)(QR_ERR_MAX - size), "%s", strerror(errnum));
 #else
 	strerror_r(errnum, info, (size_t)(QR_ERR_MAX - size));
 #endif
@@ -612,9 +612,9 @@ qrSetErrorInfo3(QRCode *qr, int errnum, const char *fmt, ...)
 
 	qr->errcode = errnum;
 	va_start(ap, fmt);
-	vsnprintf(&(info[0]), QR_ERR_MAX, fmt, ap);
+    _vsnprintf(&(info[0]), QR_ERR_MAX, fmt, ap);
 	va_end(ap);
-	snprintf(&(qr->errinfo[0]), QR_ERR_MAX, "%s%s", qrStrError(errnum), info);
+	_snprintf(&(qr->errinfo[0]), QR_ERR_MAX, "%s%s", qrStrError(errnum), info);
 }
 
 /*

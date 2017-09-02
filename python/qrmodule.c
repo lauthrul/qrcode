@@ -150,8 +150,7 @@ qr_qrcode(PyObject *self, PyObject *args, PyObject *kwds)
         NULL
     };
 
-    PyObject *data = NULL;
-    const char *bytes = NULL;
+    const char *data = NULL;
     int length = 0;
     PyObject *result = NULL;
 
@@ -167,8 +166,8 @@ qr_qrcode(PyObject *self, PyObject *args, PyObject *kwds)
 
     active_func_name = fn_qrcode;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|iiiiiiiii:qrcode", kwlist,
-                                     &data,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s#|iiiiiiiii:qrcode", kwlist,
+                                     &data, &length,
                                      &version, &mode, &eclevel,
                                      &masktype, &maxnum,
                                      &format, &separator, &scale, &order)
@@ -176,40 +175,8 @@ qr_qrcode(PyObject *self, PyObject *args, PyObject *kwds)
         return NULL;
     }
 
-    if (PyUnicode_Check(data)) {
-        PyObject *utf8 = PyUnicode_AsUTF8String(data);
-        Py_DECREF(data);
-        data = utf8;
-        if (data == NULL) {
-            return NULL;
-        }
-    }
-
-#if PY_MAJOR_VERSION >= 3
-    if (PyBytes_Check(data)) {
-        bytes = PyBytes_AsString(data);
-        length = PyBytes_Size(data);
-    }
-    else {
-        PyErr_SetString(PyExc_TypeError, "data must be str or byte");
-    }
-#else
-    if (PyString_Check(data)) {
-        bytes = PyString_AsString(data);
-        length = PyString_Size(data);
-    }
-    else {
-        PyErr_SetString(PyExc_TypeError, "data must be str or unicode");
-    }
-#endif
-
-    if (PyErr_Occurred()) {
-        Py_DECREF(data);
-        return NULL;
-    }
-
     if (maxnum == 1) {
-        result = PyQR_Process((const qr_byte_t *)bytes, length,
+        result = PyQR_Process((const qr_byte_t *)data, length,
                               version, mode, eclevel, masktype,
                               format, scale, separator);
     }
@@ -217,12 +184,10 @@ qr_qrcode(PyObject *self, PyObject *args, PyObject *kwds)
         if (version == -1) {
             version = 1;
         }
-        result = PyQR_ProcessMulti((const qr_byte_t *)bytes, length,
+        result = PyQR_ProcessMulti((const qr_byte_t *)data, length,
                                    version, mode, eclevel, masktype, maxnum,
                                    format, scale, separator, order);
     }
-
-    Py_DECREF(data);
 
     return result;
 }

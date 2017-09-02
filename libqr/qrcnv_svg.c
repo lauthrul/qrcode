@@ -60,7 +60,7 @@
 #define qrSvgWriteRectangle(qr, i, j) { \
 	if (qrIsBlack((qr), (i), (j))) { \
 		QRCNV_SVG_REALLOC(64); \
-		*size += snprintf(wptr, 64, \
+		*size += _snprintf(wptr, 64, \
 				"  <use xlink:href=\"#m\" x=\"%d\" y=\"%d\"/>\n", j, i); \
 		wptr = wbuf + *size; \
 	} \
@@ -91,7 +91,7 @@ qrSymbolToSVG(QRCode *qr, int sep, int mag, int *size)
 	if (wbuf == NULL) {
 		QRCNV_RETURN_FAILURE2(QR_ERR_MEMORY_EXHAUSTED, _QR_FUNCTION);
 	}
-	*size = snprintf(wbuf, (size_t)bufsize,
+	*size = _snprintf(wbuf, (size_t)bufsize,
 			QRCNV_SVG_BASE_TAGS_TMPL QRCNV_SVG_GROUP_TAGS_TMPL,
 			imgdim, imgdim,
 			qr->param.version, qr_eclname[qr->param.eclevel], "",
@@ -122,7 +122,7 @@ qrSymbolToSVG(QRCode *qr, int sep, int mag, int *size)
 	 * SVGを閉じる
 	 */
 	QRCNV_SVG_REALLOC(16);
-	*size += snprintf(wptr, 16, " </g>\n</svg>\n");
+	*size += _snprintf(wptr, 16, " </g>\n</svg>\n");
 
 	/*
 	 * SVGをコピーする
@@ -169,8 +169,8 @@ qrsSymbolsToSVG(QRStructured *st, int sep, int mag, int order, int *size)
 	if (wbuf == NULL) {
 		QRCNV_RETURN_FAILURE2(QR_ERR_MEMORY_EXHAUSTED, _QR_FUNCTION);
 	}
-	snprintf(&(extrainfo[0]), 32, ", structured-append=%d", st->num);
-	*size = snprintf(wbuf, (size_t)bufsize,
+	_snprintf(&(extrainfo[0]), 32, ", structured-append=%d", st->num);
+	*size = _snprintf(wbuf, (size_t)bufsize,
 			QRCNV_SVG_BASE_TAGS_TMPL,
 			xdim, ydim,
 			st->param.version, qr_eclname[st->param.eclevel], extrainfo,
@@ -194,7 +194,7 @@ qrsSymbolsToSVG(QRStructured *st, int sep, int mag, int order, int *size)
 			 * 開始タグ + 位置検出パターン
 			 */
 			QRCNV_SVG_REALLOC(1024);
-			*size += snprintf(wptr, 1024,
+			*size += _snprintf(wptr, 1024,
 					QRCNV_SVG_GROUP_TAGS_TMPL,
 					l * (sepdim + zdim) + sepdim,
 					k * (sepdim + zdim) + sepdim,
@@ -222,7 +222,7 @@ qrsSymbolsToSVG(QRStructured *st, int sep, int mag, int order, int *size)
 			 * 終了タグ
 			 */
 			QRCNV_SVG_REALLOC(8);
-			*size += snprintf(wptr, 8, " </g>\n");
+			*size += _snprintf(wptr, 8, " </g>\n");
 			wptr = wbuf + *size;
 		}
 	}
@@ -231,7 +231,7 @@ qrsSymbolsToSVG(QRStructured *st, int sep, int mag, int order, int *size)
 	 * SVGを閉じる
 	 */
 	QRCNV_SVG_REALLOC(16);
-	*size += snprintf(wptr, 16, "</svg>\n");
+	*size += _snprintf(wptr, 16, "</svg>\n");
 
 	/*
 	 * SVGをコピーする

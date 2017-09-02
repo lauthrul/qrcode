@@ -61,9 +61,9 @@
 #define QRCNV_PNG_DEFLATE_RETURN_FAILURE(errinfo) { \
 	char _info[128]; \
 	if (zst.msg) { \
-		snprintf(&(_info[0]), 128, "%s", zst.msg); \
+		_snprintf(&(_info[0]), 128, "%s", zst.msg); \
 	} else { \
-		snprintf(&(_info[0]), 128, "%s", (errinfo)); \
+		_snprintf(&(_info[0]), 128, "%s", (errinfo)); \
 	} \
 	free(rbuf); \
 	free(wbuf); \
